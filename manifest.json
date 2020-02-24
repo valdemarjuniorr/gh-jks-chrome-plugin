@@ -1,0 +1,42 @@
+{
+  "name": "Getting Started Example",
+  "version": "1.0",
+  "description": "Build an Extension!",
+  "options_page": "options.html",
+  "background": {
+    "scripts": [
+      "scripts/background.js",
+      "scripts/options.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://github.com/ContaAzul/*/pull/*"],
+      "js": ["/scripts/jquery-3.4.1.min.js", "scripts/content.js"],
+      "css": ["css/main.css"]
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
+  ],
+  "manifest_version": 2,
+  "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/get_started16.png",
+      "32": "images/get_started32.png",
+      "48": "images/get_started48.png",
+      "128": "images/get_started128.png"
+    }
+  },
+  "icons": {
+    "16": "images/get_started16.png",
+    "32": "images/get_started32.png",
+    "48": "images/get_started48.png",
+    "128": "images/get_started128.png"
+  },
+  "web_accessible_resources": ["images/*", "css/main.css"]
+}
