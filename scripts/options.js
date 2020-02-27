@@ -1,23 +1,22 @@
 $(document).ready(async function () {
-  let sandboxJob = await getFromStorage('sandbox');
+  let storage = new ChromeStorage();
+  let sandboxJob = await storage.get('sandbox');
   $("#sandbox").val(sandboxJob);
-  let productionJob = await getFromStorage('production');
+
+  let productionJob = await storage.get('production');
   $("#production").val(productionJob);
+
 });
 
 $("#buttonId").click(async function () {
+  $('#saved').hide();
+  let storage = new ChromeStorage();
+
   let sandboxJob = $('#sandbox').val();
+  storage.save('sandbox', sandboxJob);
+
   let productionJob = $('#production').val();
-  saveStorage('sandbox', sandboxJob);
-  saveStorage('production', productionJob);
-  $('#saved').show();
+  storage.save('production', productionJob);
 
+  $('#saved').show("slow");
 });
-
-function saveStorage(key, value) {
-  chrome.storage.sync.set({[key]: value});
-}
-
-async function getFromStorage(key) {
-  return new Promise(res => chrome.storage.sync.get([key], result => res(result[key])));
-}

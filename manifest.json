@@ -1,7 +1,7 @@
 {
-  "name": "Getting Started Example",
-  "version": "1.0",
-  "description": "Build an Extension!",
+  "name": "Github Jenkins plugin",
+  "version": "1.1",
+  "description": "Deploy branches in Sandbox/Production environments easily and faster!",
   "options_page": "options.html",
   "background": {
     "scripts": [
