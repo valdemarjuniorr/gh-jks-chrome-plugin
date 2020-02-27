@@ -1,3 +1,29 @@
+$(document).ready(async function () {
+  let gitUBranchInfo = $(".head-ref a").attr('title');
+  let gitInfo = getGitUser(gitUBranchInfo);
+
+  let clipboardIcon = $(".TableObject-item--primary clipboard-copy")
+    .after(await addIconLinkProd(gitInfo));
+  clipboardIcon.after(await addIconLink(gitInfo));
+
+  async function addIconLink(gitInfo) {
+    let sandboxJob = await getFromStorage('sandbox');
+    let iconPath = chrome.extension.getURL('images/rsz_jenkins_sandbox.png');
+    return generateLink('SandBox', sandboxJob, iconPath, gitInfo);
+  }
+
+  async function addIconLinkProd(gitInfo) {
+    let productionJob = await getFromStorage('production');
+    let iconPath = chrome.extension.getURL('images/rsz_cool-jenkins.png');
+    return generateLink('Production', productionJob, iconPath, gitInfo)
+  }
+});
+
+async function generateLink(title, jobName, iconPath, gitInfo) {
+  return "<span> <a target=_blank href=http://ci.contaazul.ninja:8080/job/" + jobName + "/buildWithParameters?delay=5sec&PROJECT=" + gitInfo.projectName + "&FORK=" + gitInfo.gitUser + "&BRANCH=" + gitInfo.branch + ">" +
+    "<img title='" + title + "' src=" + iconPath + " class='margin-top'></a></span>";
+}
+
 class GitInfo {
   constructor(gitUser, projectName, branch) {
     this.gitUser = gitUser;
@@ -6,26 +32,9 @@ class GitInfo {
   }
 }
 
-
-let gitUBranchInfo = $(".head-ref a").attr('title');
-let gitInfo = getGitUser(gitUBranchInfo);
-
-let clipboardIcon = $(".TableObject-item--primary clipboard-copy")
-  .after(addIconLinkProd(gitInfo.projectName, gitInfo.gitUser, gitInfo.branch));
-clipboardIcon.after(addIconLink(gitInfo.projectName, gitInfo.gitUser, gitInfo.branch));
-
-function addIconLink(project, fork, branch) {
-  let iconPath = chrome.extension.getURL('images/rsz_jenkins_sandbox.png');
-  return "<span> <a target=_blank href=http://ci.contaazul.ninja:8080/job/ms-deploy-sandbox/buildWithParameters?delay=10sec&PROJECT=" + project + "&FORK=" + fork + "&BRANCH=" + branch + ">" +
-    "<img title='Sandbox' src=" + iconPath + " class='margin-top'></a></span>";
+async function getFromStorage(key) {
+  return new Promise(res => chrome.storage.sync.get([key], result => res(result[key])));
 }
-
-function addIconLinkProd(project, fork, branch) {
-  let iconPath = chrome.extension.getURL('images/rsz_cool-jenkins.png');
-  return "<span> <a target=_blank href=http://ci.contaazul.ninja:8080/job/ms-deploy-prod/buildWithParameters?delay=10sec&PROJECT=" + project + "&FORK=" + fork + "&BRANCH=" + branch + ">" +
-    "<img title='Production' src=" + iconPath + " class='margin-top'></a></span>";
-}
-
 
 function getGitUser(gitBranchInfo) {
   let userPosition = gitBranchInfo.search("/");
