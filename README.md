@@ -16,7 +16,7 @@ git clone git@github.com:valdemarjuniorr/gh-jks-chrome-plugin.git
 ### Configuration
 
 To configure sandbox and production job's names you must to go in **Extension options**. To do that:
-- Go to chrome extensions [clicking here](chrome://extensions/).
+- Go to chrome extensions open a new tab with `chrome://extensions/`.
 - Find **Github Jenkins plugin** and click on **Details** button.
 - And then click in **Extension options**. It will open a html file like this:
 
