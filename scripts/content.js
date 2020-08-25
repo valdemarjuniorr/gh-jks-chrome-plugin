@@ -3,8 +3,8 @@ $(document).ready(async function () {
   let gitInfo = new GitInfo(gitUBranchInfo);
 
   let htmlComponentGenerator = new HtmlComponentGenerator(gitInfo);
-
-  let clipboardIcon = $(".TableObject-item--primary clipboard-copy");
+  alert('passou aqui')
+  let clipboardIcon = $(".js-clipboard-copy");
   clipboardIcon.after(await htmlComponentGenerator.production());
   clipboardIcon.after(await await htmlComponentGenerator.sandbox());
 
